@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="Radiation Oncology BED Calculator" scaling="true" scrolling="false" height="280" author="Faisal Vali" author_email="faisalv@yahoo.com" description="A BED calculator for Radiation Oncologists that uses the LQED model to help convert fractionation schemes" />
+<Content type="html">
+<!--
+/*
+TODO:
+- add time factor so that we can use LDR conversions
+- add an option that triggers auto-changes vs changes when you hit enter -
+Added Warning/Disclaimer
+*/
+-->
+<![CDATA[
+<style type="text/css">
+
+.total_row_container {
+padding-top: 10px;
+width: 330px;
+height: 80px;
+
+}
+
+
+.total_row {
+border: 2px solid;
+border-color: green;
+
+
+width: 200px;
+font-size: 10pt;
+height: 50px;
+text-align: center;
+padding-top: 5px;
+font-variant: small-caps;
+font-weight: bold;
+color: red;
+float: left;
+}
+.totalEarlyLQED, .totalLateLQED {
+font-size: 8pt;
+color: red;
+}
+
+.options_table {
+float: left;
+
+}
+
+.totals_table {
+border: 2px solid;
+border-color: green;
+float: right;
+color: red;
+font-size: 10pt;
+font-weight: bold;
+}
+
+.prescription, .bed, .lqed {
+width: 105px;
+border: 1px dotted;
+height: 80px;
+margin: 1px;
+font-size: 5pt;
+}
+
+div.row {
+border-style: solid;
+position: relative;
+margin-top: 5px;
+height: 85px;
+width: 330px;
+}
+
+.section {
+text-align: center;
+font-size: 8pt;
+font-weight: bold;
+}
+
+.label {
+border: 1px solid;
+display: inline;
+margin: 1px;
+width: 52px;
+float: left;
+clear: both;
+text-align: center;
+height: 18px;
+font-size: 8pt;
+}
+
+
+
+input {
+float: right;
+margin: 1px;
+width: 33px;
+font-size: 8pt;
+height: 18px;
+
+}
+.clearButton {
+float: none;
+width : auto;
+height : auto;
+
+}
+input[readonly] {
+background-color: rgb(90%,90%,90%);
+}
+
+.bed .label
+{
+margin-top: 1px;
+}
+.bed input
+{
+margin-top: 1px;
+}
+
+.row .prescription {
+float: left;
+
+}
+.row .bed {
+float: left;
+}
+
+.row .lqed {
+float: left;
+}
+
+
+.Header {
+font-size: 8pt;
+text-align: center;
+font-family: sans-serif;
+color: green;
+}
+</style>
+
+<div class="row">
+<div class="prescription">
+<div class="section">Prescription #1:</div>
+<div class="label">Dose/Fx:</div>
+<input
+class="dosePerFraction"
+tabindex="1"
+type="text"
+/>
+
+<div class="label"># Fxs:</div>
+<input
+class="numberOfFractions"
+tabindex="2"
+type="text"
+/>
+
+<div class="label">Total:</div>
+<input
+class="totalDose"
+tabindex="3"
+type="text"
+
+/>
+</div> <!-- prescription -->
+
+<div class="bed">
+<div class="section">BED #1:</div>
+<div class="label">Early:</div>
+<input
+class="BEDEarly"
+readonly="true"
+type="text"
+/>
+<div class="label">Late:</div>
+<input
+class="BEDLate"
+readonly="true"
+type="text"
+/>
+</div>
+
+<div class="lqed">
+<div class="section">NTD #1: </div>
+<div class="label">Dose/Fx:</div>
+<input
+class="dosePerFractionToConvertTo"
+tabindex="4"
+type="text"
+value="2"
+/>
+
+<div class="label"> Early:</div>
+<input
+class="LQEDEarly"
+readonly="true"
+type="text"
+/>
+
+<div class="label"> Late:</div>
+<input
+class="LQEDLate"
+readonly="true"
+type="text"
+/>
+</div>
+</div> <!-- row -->
+
+<div class="row">
+<div class="prescription">
+<div class="section">Prescription #2:</div>
+<div class="label">Dose/Fx:</div> <input class="dosePerFraction" tabindex="5" type="text" /> <div class="label"># Fxs:</div> <input class="numberOfFractions" tabindex="6" type="text" /> <div class="label">Total:</div> <input class="totalDose" type="text" tabindex="7" /> </div> <!-- prescription --> <div class="bed"> <div class="section">BED #2:</div> <div class="label">Early:</div> <input class="BEDEarly" readonly="true" type="text" /> <div class="label">Late:</div> <input class="BEDLate" readonly="true" type="text" /> </div> <div class="lqed"> <div class="section">NTD #2: </div> <div class="label">Dose/Fx:</div> <input class="dosePerFractionToConvertTo" tabindex="8" type="text" value="2" /> <div class="label"> Early:</div> <input class="LQEDEarly" readonly="true" type="text" /> <div class="label"> Late:</div> <input class="LQEDLate" readonly="true" type="text" /> </div> </div> <!-- row --> <div class="total_row_container"> <div class="options_table"> <table> <tr> <td> <div class="label">Early &alpha;/&beta;:</div> </td> <td> <input class="earlyAlphaBeta" tabindex="9" type="text" value="10" /> <td> </tr> <tr> <td> <div class="label">Late &alpha;/&beta;:</div> </td> <td> <input class="lateAlphaBeta" tabindex="10" type="text" value="3" /> </td> </tr> <tr> <td align="center" colspan="2"> <input class="clearButton" type="button" value="Reset All"></input> </td> </tr> </table> </div> <div class="totals_table"> <table> <tr> <td align="center" colspan="5"> <span class="section">Total Dose From Prescription</span> <td> </tr> <tr> <td align="center" colspan="5"> <span class="section">#1 and #2 at <span class="totalLQEDDosePerFraction">2</span> Gy/Fx is:</span> <td> </tr> <tr> <td align="center"> <span class="label"> Early: </span> </td> <td align="center"> <span class="totalEarlyLQED">----</span> </td> <td></td> <td align="center"> <span class="label"> Late: </span> </td> <td align="center"> <span class="totalLateLQED">----</span> </td> </tr> </table> </div> </div> 
+
+<script src="http://www.google.com/jsapi"></script> <script> //alert("hello -1"); 
+google.load("jquery", "1.3.1"); 
+
+//var DOSE_PER_FRACTION_CLASS = ".dosePerFraction"; 
+//var $dv = console.log; 
+
+var DEFAULT_VALUES = { ".dosePerFraction" : 2 ,".numberOfFractions" : 0 , ".dosePerFractionToConvertTo" : 2 , ".earlyAlphaBeta" : 10 , ".lateAlphaBeta" : 3 }; 
+var PRECISION = 2; 
+
+google.setOnLoadCallback(function() { var warn = true; 
+var WARNING = "ANY CLINICIAN SEEKING TO USE THIS BED CALCULATOR IS EXPECTED TO USE INDEPENDENT MEDICAL JUDGMENT" 
++ " IN THE CONTEXT OF INDIVIDUAL CLINICAL CIRCUMSTANCES TO DETERMINE ANY PATIENT’S CARE OR TREATMENT." 
++ "\n\n THE AUTHOR MAKES NO WARRANTIES CONCERNING THE ACCURACY OF THE CALCULATIONS, AND IN NO EVENT" 
++ " SHALL THE AUTHOR BE LIABLE FOR ANY DAMAGES OF ANY KIND ARISING OUT OF OR IN CONNECTION WITH" 
++ " THE USE OF THIS CALCULATOR.\n\t-FV"; 
+
+var reset_warn_id = null; 
+var WARN_IDLE_INTERVAL_IN_MIN = 15; 
+var WARN_IDLE_INTERVAL = 1000 * 60 * WARN_IDLE_INTERVAL_IN_MIN; 
+
+function updateAllFields(e, config) 
+{ 
+  var that = $(this); 
+  if(!config) config = {}; 
+  var my_row = that.parents("div.row"); 
+  if (my_row.length == 0) throw "Could not find div.row as parent of " + this.nodeName; 
+  var dpf = $(".dosePerFraction", my_row); 
+  var nof = $(".numberOfFractions", my_row); //var totaldose = $(".totalDose", my_row); 
+  var dpf_to_convert_to = $(".dosePerFractionToConvertTo", my_row); 
+  
+  if (!config.skipWarning) 
+  { 
+    if (warn) { warn = false; alert(WARNING); } 
+    else 
+    { 
+      if (reset_warn_id) clearTimeout(reset_warn_id); 
+      reset_warn_id = setTimeout( function() { warn = true; }, WARN_IDLE_INTERVAL ); } } 
+      try { 
+      var early_ab = parseFloat($(".earlyAlphaBeta")[0].value); 
+      var late_ab = parseFloat($(".lateAlphaBeta")[0].value); 
+      var dose_per_fx = parseFloat(dpf[0].value); 
+      var num_fx = parseFloat(nof[0].value); 
+      var early_bed = dose_per_fx * num_fx * (1 + dose_per_fx/early_ab); 
+      var late_bed = dose_per_fx * num_fx * (1 + dose_per_fx/late_ab); 
+      var new_dose_per_fx = parseFloat(dpf_to_convert_to[0].value); 
+      var early_lqed = (new_dose_per_fx * early_bed)/(new_dose_per_fx * (1 + new_dose_per_fx/early_ab)); 
+      var late_lqed = (new_dose_per_fx * late_bed)/(new_dose_per_fx * (1 + new_dose_per_fx/late_ab)); 
+      
+      if(!config.skipTotalDose) 
+         $(".totalDose", my_row)[0].value = (new Number(dose_per_fx * num_fx)).toFixed(PRECISION); 
+      $(".BEDEarly", my_row)[0].value = (new Number(early_bed)).toFixed(PRECISION); 
+      $(".BEDLate", my_row)[0].value = (new Number(late_bed)).toFixed(PRECISION); 
+      $(".LQEDEarly", my_row)[0].value = (new Number(early_lqed)).toFixed(PRECISION); 
+      $(".LQEDLate", my_row)[0].value = (new Number(late_lqed)).toFixed(PRECISION); 
+      var total_early_lqed = 0; var total_late_lqed = 0; 
+      var rows = $("div.row"); 
+      $.each(rows, function(i,r) { 
+        var row = $(r); 
+        var early = $(".LQEDEarly", row)[0]; 
+        var late = $(".LQEDLate", row)[0]; 
+        var early_value = parseFloat(early.value); 
+        var late_value = parseFloat(late.value); 
+        if (!isNaN(early_value)) { total_early_lqed += early_value; total_late_lqed += late_value; } 
+      }); 
+      //var table = /* $(".total_row").text("Total Dose From #1 & #2 at " + new_dose_per_fx + " Gy/Fx is:\n" + new Number(total_early_lqed).toFixed(PRECISION) + "(E) & " + new Number(total_late_lqed).toFixed(PRECISION) + "(L)"); */ 
+        
+      $(".totalLateLQED").text(""+new Number(total_late_lqed).toFixed(PRECISION)); 
+      $(".totalEarlyLQED").text(""+new Number(total_early_lqed).toFixed(PRECISION)); 
+      $(".totalLQEDDosePerFraction").text(""+new Number(new_dose_per_fx).toFixed(PRECISION)); 
+    } 
+    catch(ex) 
+    { alert("exception occured"); } 
+  } // end updateAllFields 
+  //var is_still_typing_in_TD = false; 
+    var total_dose_typing_data = {}; // use this flag so that we record the nof data // - and keep using it if dpf was 0 when we started typing function changeTD_DPF_NOF( e, type ) { var that = $(this); try { var my_row = that.parents("div.row"); var cur_dpf = $(".dosePerFraction", my_row)[0]; var cur_nof = $(".numberOfFractions", my_row)[0]; var cur_td = $(".totalDose", my_row)[0]; var cur_dpf_val = parseFloat(cur_dpf.value); var cur_nof_val = parseFloat(cur_nof.value); var cur_td_val = parseFloat(cur_td.value); if ( type == "td") // we typed in the totalDose { if (!total_dose_typing_data.is_still_typing) { total_dose_typing_data.orig_dpf_val = cur_dpf_val; total_dose_typing_data.is_still_typing = true; } cur_dpf_val = total_dose_typing_data.orig_dpf_val; if (cur_dpf_val == 0 || isNaN(cur_dpf_val)) { cur_dpf.value = (new Number(cur_td_val/cur_nof_val)).toFixed(PRECISION); updateAllFields.call(cur_dpf,e, { skipTotalDose : true }); } else { cur_nof.value = (new Number(cur_td_val/cur_dpf_val)).toFixed(PRECISION); updateAllFields.call(cur_nof,e, { skipTotalDose : true }); } } else { total_dose_typing_data.is_still_typing = false; updateAllFields.call(this,e); } } catch(e) { alert("Exception occured: " + e); } } // end changeTD_DPF_NOF function updateLQEDConversionAndThenAllFields(e) { var that = this; var my_row = $(that).parents("div.row"); var new_dpf_value =$(".dosePerFractionToConvertTo", my_row)[0].value; //alert( new_dpf_value ); var rows = $("div.row"); $.each(rows, function(i,r) { var row = $(r); var dpf_field = $(".dosePerFractionToConvertTo", r); if ( that !== dpf_field[0] ) dpf_field[0].value = (new Number(new_dpf_value)).toFixed(PRECISION); updateAllFields.call(dpf_field[0],e ); }); } function updateAllFieldsPostAlphaBetaChange(e) { //alert( new_dpf_value ); var rows = $("div.row"); $.each(rows, function(i,r) { var row = $(r); var dpf_field = $(".dosePerFractionToConvertTo", r); updateAllFields.call(dpf_field[0],e); }); } function clearAll(evt, config) { var rows = $("div.row"); var fields_to_clear = []; $.each(rows, function(i,r) { var row = $(r); var added = false; var fields = [ ".dosePerFractionToConvertTo" , ".dosePerFraction" , ".numberOfFractions" , ".earlyAlphaBeta" , ".lateAlphaBeta" ]; $.each(fields, function(i, c) // set each class to its default value { var f = $(c, r); if (f.length == 0) f = $(c); // the earlyAlphaBetas are not in any rows if (f.length) { f[0].value = DEFAULT_VALUES[c]; } if (!added) { fields_to_clear.push(f[0]); // add it to our array so we can trigger an update added = true; } }); // for each field }); // for each row $.each(fields_to_clear, function(i, f) { updateAllFields.call(f,evt,config); }); } // end function clearAll $(".dosePerFraction").keyup( function(e) { changeTD_DPF_NOF.call(this,e,"dpf"); } ); $(".numberOfFractions").keyup( function(e) { changeTD_DPF_NOF.call(this,e,"nof"); } ); $(".totalDose").keyup( function(e) { //if (e.keyCode == 13) changeTD_DPF_NOF.call(this,e,"td"); } ); $(".totalDose").blur( function(e) { var that = this; total_dose_typing_data = {}; //setTimeout( function() { changeTD_DPF_NOF.call(that,e,"td"); total_dose_typing_data = {} }, 0 ); }); $(".dosePerFractionToConvertTo").keyup( updateLQEDConversionAndThenAllFields ); $(".clearButton").click(clearAll ); $(".earlyAlphaBeta").keyup( updateAllFieldsPostAlphaBetaChange ); $(".lateAlphaBeta").keyup( updateAllFieldsPostAlphaBetaChange ); clearAll(0, { skipWarning : true } ); }); /* function validateInputField(elem) { // validates that the field value string has one or more characters in it function isEmpty(str) { var re = /.+/; return !str.match(re); } function isPositiveNumber(arg) { //var numPattern = /^[-]?\d*\.?\d*$/; var numPattern = /^\d*\.?\d*$/; return arg.match(numPattern); } function isZero(str) { var num = parseFloat(str); return (num == 0); } var ok = !isEmpty(elem.value); if (ok) { ok = isPositiveNumber(elem.value); if(ok) { ok = !isZero(elem.value); } } return ok; } function validateAllFields(fields) { $.each( fields, function(i,field) { if (!validateInputfield(field)) field.value = "NaN"; }); } */ </script> ]]> </Content> </Module>
