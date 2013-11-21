@@ -286,4 +286,139 @@ function updateAllFields(e, config)
     { alert("exception occured"); } 
   } // end updateAllFields 
   //var is_still_typing_in_TD = false; 
-    var total_dose_typing_data = {}; // use this flag so that we record the nof data // - and keep using it if dpf was 0 when we started typing function changeTD_DPF_NOF( e, type ) { var that = $(this); try { var my_row = that.parents("div.row"); var cur_dpf = $(".dosePerFraction", my_row)[0]; var cur_nof = $(".numberOfFractions", my_row)[0]; var cur_td = $(".totalDose", my_row)[0]; var cur_dpf_val = parseFloat(cur_dpf.value); var cur_nof_val = parseFloat(cur_nof.value); var cur_td_val = parseFloat(cur_td.value); if ( type == "td") // we typed in the totalDose { if (!total_dose_typing_data.is_still_typing) { total_dose_typing_data.orig_dpf_val = cur_dpf_val; total_dose_typing_data.is_still_typing = true; } cur_dpf_val = total_dose_typing_data.orig_dpf_val; if (cur_dpf_val == 0 || isNaN(cur_dpf_val)) { cur_dpf.value = (new Number(cur_td_val/cur_nof_val)).toFixed(PRECISION); updateAllFields.call(cur_dpf,e, { skipTotalDose : true }); } else { cur_nof.value = (new Number(cur_td_val/cur_dpf_val)).toFixed(PRECISION); updateAllFields.call(cur_nof,e, { skipTotalDose : true }); } } else { total_dose_typing_data.is_still_typing = false; updateAllFields.call(this,e); } } catch(e) { alert("Exception occured: " + e); } } // end changeTD_DPF_NOF function updateLQEDConversionAndThenAllFields(e) { var that = this; var my_row = $(that).parents("div.row"); var new_dpf_value =$(".dosePerFractionToConvertTo", my_row)[0].value; //alert( new_dpf_value ); var rows = $("div.row"); $.each(rows, function(i,r) { var row = $(r); var dpf_field = $(".dosePerFractionToConvertTo", r); if ( that !== dpf_field[0] ) dpf_field[0].value = (new Number(new_dpf_value)).toFixed(PRECISION); updateAllFields.call(dpf_field[0],e ); }); } function updateAllFieldsPostAlphaBetaChange(e) { //alert( new_dpf_value ); var rows = $("div.row"); $.each(rows, function(i,r) { var row = $(r); var dpf_field = $(".dosePerFractionToConvertTo", r); updateAllFields.call(dpf_field[0],e); }); } function clearAll(evt, config) { var rows = $("div.row"); var fields_to_clear = []; $.each(rows, function(i,r) { var row = $(r); var added = false; var fields = [ ".dosePerFractionToConvertTo" , ".dosePerFraction" , ".numberOfFractions" , ".earlyAlphaBeta" , ".lateAlphaBeta" ]; $.each(fields, function(i, c) // set each class to its default value { var f = $(c, r); if (f.length == 0) f = $(c); // the earlyAlphaBetas are not in any rows if (f.length) { f[0].value = DEFAULT_VALUES[c]; } if (!added) { fields_to_clear.push(f[0]); // add it to our array so we can trigger an update added = true; } }); // for each field }); // for each row $.each(fields_to_clear, function(i, f) { updateAllFields.call(f,evt,config); }); } // end function clearAll $(".dosePerFraction").keyup( function(e) { changeTD_DPF_NOF.call(this,e,"dpf"); } ); $(".numberOfFractions").keyup( function(e) { changeTD_DPF_NOF.call(this,e,"nof"); } ); $(".totalDose").keyup( function(e) { //if (e.keyCode == 13) changeTD_DPF_NOF.call(this,e,"td"); } ); $(".totalDose").blur( function(e) { var that = this; total_dose_typing_data = {}; //setTimeout( function() { changeTD_DPF_NOF.call(that,e,"td"); total_dose_typing_data = {} }, 0 ); }); $(".dosePerFractionToConvertTo").keyup( updateLQEDConversionAndThenAllFields ); $(".clearButton").click(clearAll ); $(".earlyAlphaBeta").keyup( updateAllFieldsPostAlphaBetaChange ); $(".lateAlphaBeta").keyup( updateAllFieldsPostAlphaBetaChange ); clearAll(0, { skipWarning : true } ); }); /* function validateInputField(elem) { // validates that the field value string has one or more characters in it function isEmpty(str) { var re = /.+/; return !str.match(re); } function isPositiveNumber(arg) { //var numPattern = /^[-]?\d*\.?\d*$/; var numPattern = /^\d*\.?\d*$/; return arg.match(numPattern); } function isZero(str) { var num = parseFloat(str); return (num == 0); } var ok = !isEmpty(elem.value); if (ok) { ok = isPositiveNumber(elem.value); if(ok) { ok = !isZero(elem.value); } } return ok; } function validateAllFields(fields) { $.each( fields, function(i,field) { if (!validateInputfield(field)) field.value = "NaN"; }); } */ </script> ]]> </Content> </Module>
+    var total_dose_typing_data = {}; // use this flag so that we record the nof data 
+    // - and keep using it if dpf was 0 when we started typing 
+    function changeTD_DPF_NOF( e, type ) { 
+      var that = $(this); 
+      try { 
+        var my_row = that.parents("div.row"); 
+        var cur_dpf = $(".dosePerFraction", my_row)[0]; 
+        var cur_nof = $(".numberOfFractions", my_row)[0]; 
+        var cur_td = $(".totalDose", my_row)[0]; 
+        var cur_dpf_val = parseFloat(cur_dpf.value); 
+        var cur_nof_val = parseFloat(cur_nof.value); 
+        var cur_td_val = parseFloat(cur_td.value); 
+        if ( type == "td") { // we typed in the totalDose 
+          if (!total_dose_typing_data.is_still_typing) {
+            total_dose_typing_data.orig_dpf_val = cur_dpf_val; 
+            total_dose_typing_data.is_still_typing = true; 
+          } 
+          cur_dpf_val = total_dose_typing_data.orig_dpf_val; 
+          if (cur_dpf_val == 0 || isNaN(cur_dpf_val)) { 
+            cur_dpf.value = (new Number(cur_td_val/cur_nof_val)).toFixed(PRECISION); 
+            updateAllFields.call(cur_dpf,e, { skipTotalDose : true }); 
+          } else { 
+            cur_nof.value = (new Number(cur_td_val/cur_dpf_val)).toFixed(PRECISION); 
+            updateAllFields.call(cur_nof,e, { skipTotalDose : true }); 
+          } 
+        } else { 
+          total_dose_typing_data.is_still_typing = false; 
+          updateAllFields.call(this,e); 
+        } 
+      } catch(e) { 
+        alert("Exception occured: " + e); 
+      } 
+    } // end changeTD_DPF_NOF 
+    function updateLQEDConversionAndThenAllFields(e) {
+      var that = this; 
+      var my_row = $(that).parents("div.row");
+      var new_dpf_value =$(".dosePerFractionToConvertTo", my_row)[0].value; 
+      //alert( new_dpf_value ); 
+      var rows = $("div.row"); 
+      $.each(rows, function(i,r) { 
+        var row = $(r); 
+        var dpf_field = $(".dosePerFractionToConvertTo", r); 
+        if ( that !== dpf_field[0] ) 
+          dpf_field[0].value = (new Number(new_dpf_value)).toFixed(PRECISION); 
+        updateAllFields.call(dpf_field[0],e ); 
+      }); 
+    } 
+    function updateAllFieldsPostAlphaBetaChange(e) { 
+      //alert( new_dpf_value ); 
+      var rows = $("div.row"); 
+      $.each(rows, function(i,r) {
+        var row = $(r); 
+        var dpf_field = $(".dosePerFractionToConvertTo", r); 
+        updateAllFields.call(dpf_field[0],e); 
+      }); 
+    } 
+    
+    function clearAll(evt, config) { 
+      var rows = $("div.row"); 
+      var fields_to_clear = []; 
+      $.each(rows, function(i,r) { 
+        var row = $(r); 
+        var added = false; 
+        var fields = [ ".dosePerFractionToConvertTo"
+          , ".dosePerFraction" 
+          , ".numberOfFractions" 
+          , ".earlyAlphaBeta" 
+          , ".lateAlphaBeta" ]; 
+        $.each(fields, function(i, c) { // set each class to its default value 
+          var f = $(c, r); 
+          if (f.length == 0) 
+            f = $(c); // the earlyAlphaBetas are not in any rows 
+          if (f.length) { 
+            f[0].value = DEFAULT_VALUES[c]; 
+          } 
+          if (!added) { 
+            fields_to_clear.push(f[0]); // add it to our array so we can trigger an update 
+            added = true; 
+          } 
+        }); // for each field 
+      }); // for each row 
+      $.each(fields_to_clear, function(i, f) { 
+        updateAllFields.call(f,evt,config); 
+      }); 
+    } // end function clearAll 
+    
+    $(".dosePerFraction").keyup( function(e) {
+      changeTD_DPF_NOF.call(this,e,"dpf"); 
+    }); 
+    
+    $(".numberOfFractions").keyup( function(e) { 
+      changeTD_DPF_NOF.call(this,e,"nof"); 
+    }); 
+    
+    $(".totalDose").keyup( function(e) { 
+      //if (e.keyCode == 13) changeTD_DPF_NOF.call(this,e,"td"); 
+    }); 
+    $(".totalDose").blur( function(e) { 
+      var that = this; total_dose_typing_data = {}; 
+      //setTimeout( function() { changeTD_DPF_NOF.call(that,e,"td"); total_dose_typing_data = {} }, 0 ); 
+    }); 
+    
+    $(".dosePerFractionToConvertTo").keyup( updateLQEDConversionAndThenAllFields ); 
+    $(".clearButton").click(clearAll ); 
+    $(".earlyAlphaBeta").keyup( updateAllFieldsPostAlphaBetaChange ); 
+    $(".lateAlphaBeta").keyup( updateAllFieldsPostAlphaBetaChange ); 
+    clearAll(0, { skipWarning : true } ); }); 
+    /* function validateInputField(elem) { 
+      // validates that the field value string has one or more characters in it 
+      function isEmpty(str) { 
+        var re = /.+/; 
+        return !str.match(re); 
+      } 
+      function isPositiveNumber(arg) { 
+        //var numPattern = /^[-]?\d*\.?\d*$/; 
+        var numPattern = /^\d*\.?\d*$/; 
+        return arg.match(numPattern); 
+      } 
+      function isZero(str) { 
+        var num = parseFloat(str); 
+        return (num == 0); 
+      } 
+      var ok = !isEmpty(elem.value); 
+      if (ok) { 
+        ok = isPositiveNumber(elem.value); 
+        if(ok) { ok = !isZero(elem.value); } 
+      } 
+      return ok; 
+    } 
+    function validateAllFields(fields) { 
+      $.each( fields, function(i,field) { 
+        if (!validateInputfield(field)) 
+          field.value = "NaN"; 
+      }); 
+    } */ 
+    </script> ]]> </Content> </Module>
