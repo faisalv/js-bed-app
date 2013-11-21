@@ -20,197 +20,155 @@ Added Warning/Disclaimer
 <style type="text/css">
 
 .total_row_container {
-padding-top: 10px;
-width: 330px;
-height: 80px;
-
+  padding-top: 10px;
+  width: 330px;
+  height: 80px;
 }
 
 
 .total_row {
-border: 2px solid;
-border-color: green;
-
-
-width: 200px;
-font-size: 10pt;
-height: 50px;
-text-align: center;
-padding-top: 5px;
-font-variant: small-caps;
-font-weight: bold;
-color: red;
-float: left;
+  border: 2px solid;
+  border-color: green;
+  width: 200px;
+  font-size: 10pt;
+  height: 50px;
+  text-align: center;
+  padding-top: 5px;
+  font-variant: small-caps;
+  font-weight: bold;
+  color: red;
+  float: left;
 }
+
 .totalEarlyLQED, .totalLateLQED {
-font-size: 8pt;
-color: red;
+  font-size: 8pt;
+  color: red;
 }
 
 .options_table {
-float: left;
-
+  float: left;
 }
 
 .totals_table {
-border: 2px solid;
-border-color: green;
-float: right;
-color: red;
-font-size: 10pt;
-font-weight: bold;
+  border: 2px solid;
+  border-color: green;
+  float: right;
+  color: red;
+  font-size: 10pt;
+  font-weight: bold;
 }
 
 .prescription, .bed, .lqed {
-width: 105px;
-border: 1px dotted;
-height: 80px;
-margin: 1px;
-font-size: 5pt;
+  width: 105px;
+  border: 1px dotted;
+  height: 80px;
+  margin: 1px;
+  font-size: 5pt;
 }
 
 div.row {
-border-style: solid;
-position: relative;
-margin-top: 5px;
-height: 85px;
-width: 330px;
+  border-style: solid;
+  position: relative;
+  margin-top: 5px;
+  height: 85px;
+  width: 330px;
 }
 
 .section {
-text-align: center;
-font-size: 8pt;
-font-weight: bold;
+  text-align: center;
+  font-size: 8pt;
+  font-weight: bold;
 }
 
 .label {
-border: 1px solid;
-display: inline;
-margin: 1px;
-width: 52px;
-float: left;
-clear: both;
-text-align: center;
-height: 18px;
-font-size: 8pt;
+  border: 1px solid;
+  display: inline;
+  margin: 1px;
+  width: 52px;
+  float: left;
+  clear: both;
+  text-align: center;
+  height: 18px;
+  font-size: 8pt;
 }
-
-
 
 input {
-float: right;
-margin: 1px;
-width: 33px;
-font-size: 8pt;
-height: 18px;
-
+  float: right;
+  margin: 1px;
+  width: 33px;
+  font-size: 8pt;
+  height: 18px;
 }
 .clearButton {
-float: none;
-width : auto;
-height : auto;
-
+  float: none;
+  width : auto;
+  height : auto;
 }
 input[readonly] {
-background-color: rgb(90%,90%,90%);
+  background-color: rgb(90%,90%,90%);
 }
 
-.bed .label
-{
-margin-top: 1px;
+.bed .label {
+  margin-top: 1px;
 }
-.bed input
-{
-margin-top: 1px;
+.bed input {
+  margin-top: 1px;
 }
 
 .row .prescription {
-float: left;
-
+  float: left;
 }
 .row .bed {
-float: left;
+  float: left;
 }
 
 .row .lqed {
-float: left;
+  float: left;
 }
 
 
 .Header {
-font-size: 8pt;
-text-align: center;
-font-family: sans-serif;
-color: green;
+  font-size: 8pt;
+  text-align: center;
+  font-family: sans-serif;
+  color: green;
 }
+
 </style>
 </head>
+
 <body>
 <div class="row">
 <div class="prescription">
 <div class="section">Prescription #1:</div>
 <div class="label">Dose/Fx:</div>
-<input
-class="dosePerFraction"
-tabindex="1"
-type="text"
-/>
+<input class="dosePerFraction" tabindex="1" type="text"/>
 
 <div class="label"># Fxs:</div>
-<input
-class="numberOfFractions"
-tabindex="2"
-type="text"
-/>
+<input class="numberOfFractions" tabindex="2" type="text"/>
 
 <div class="label">Total:</div>
-<input
-class="totalDose"
-tabindex="3"
-type="text"
-
-/>
+<input class="totalDose" tabindex="3" type="text"/>
 </div> <!-- prescription -->
 
 <div class="bed">
 <div class="section">BED #1:</div>
 <div class="label">Early:</div>
-<input
-class="BEDEarly"
-readonly="true"
-type="text"
-/>
+<input class="BEDEarly" readonly="true" type="text"/>
 <div class="label">Late:</div>
-<input
-class="BEDLate"
-readonly="true"
-type="text"
-/>
+<input class="BEDLate" readonly="true" type="text"/>
 </div>
 
 <div class="lqed">
 <div class="section">NTD #1: </div>
 <div class="label">Dose/Fx:</div>
-<input
-class="dosePerFractionToConvertTo"
-tabindex="4"
-type="text"
-value="2"
-/>
+<input class="dosePerFractionToConvertTo" tabindex="4" type="text" value="2"/>
 
 <div class="label"> Early:</div>
-<input
-class="LQEDEarly"
-readonly="true"
-type="text"
-/>
+<input class="LQEDEarly" readonly="true" type="text"/>
 
 <div class="label"> Late:</div>
-<input
-class="LQEDLate"
-readonly="true"
-type="text"
-/>
+<input class="LQEDLate" readonly="true" type="text"/>
 </div>
 </div> <!-- row -->
 
