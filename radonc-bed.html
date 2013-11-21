@@ -1,7 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Module>
-<ModulePrefs title="Radiation Oncology BED Calculator" scaling="true" scrolling="false" height="280" author="Faisal Vali" author_email="faisalv@yahoo.com" description="A BED calculator for Radiation Oncologists that uses the LQED model to help convert fractionation schemes" />
-<Content type="html">
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Radiation Oncology BED Calculator</title> 
+  
+<!--
+  scaling="true" scrolling="false" height="280" author="Faisal Vali" author_email="faisalv@yahoo.com" description="A BED calculator for Radiation Oncologists that uses the LQED model to help convert fractionation schemes" 
+-->
+  
 <!--
 /*
 TODO:
@@ -10,7 +16,7 @@ TODO:
 Added Warning/Disclaimer
 */
 -->
-<![CDATA[
+
 <style type="text/css">
 
 .total_row_container {
@@ -138,7 +144,8 @@ font-family: sans-serif;
 color: green;
 }
 </style>
-
+</head>
+<body>
 <div class="row">
 <div class="prescription">
 <div class="section">Prescription #1:</div>
@@ -210,9 +217,69 @@ type="text"
 <div class="row">
 <div class="prescription">
 <div class="section">Prescription #2:</div>
-<div class="label">Dose/Fx:</div> <input class="dosePerFraction" tabindex="5" type="text" /> <div class="label"># Fxs:</div> <input class="numberOfFractions" tabindex="6" type="text" /> <div class="label">Total:</div> <input class="totalDose" type="text" tabindex="7" /> </div> <!-- prescription --> <div class="bed"> <div class="section">BED #2:</div> <div class="label">Early:</div> <input class="BEDEarly" readonly="true" type="text" /> <div class="label">Late:</div> <input class="BEDLate" readonly="true" type="text" /> </div> <div class="lqed"> <div class="section">NTD #2: </div> <div class="label">Dose/Fx:</div> <input class="dosePerFractionToConvertTo" tabindex="8" type="text" value="2" /> <div class="label"> Early:</div> <input class="LQEDEarly" readonly="true" type="text" /> <div class="label"> Late:</div> <input class="LQEDLate" readonly="true" type="text" /> </div> </div> <!-- row --> <div class="total_row_container"> <div class="options_table"> <table> <tr> <td> <div class="label">Early &alpha;/&beta;:</div> </td> <td> <input class="earlyAlphaBeta" tabindex="9" type="text" value="10" /> <td> </tr> <tr> <td> <div class="label">Late &alpha;/&beta;:</div> </td> <td> <input class="lateAlphaBeta" tabindex="10" type="text" value="3" /> </td> </tr> <tr> <td align="center" colspan="2"> <input class="clearButton" type="button" value="Reset All"></input> </td> </tr> </table> </div> <div class="totals_table"> <table> <tr> <td align="center" colspan="5"> <span class="section">Total Dose From Prescription</span> <td> </tr> <tr> <td align="center" colspan="5"> <span class="section">#1 and #2 at <span class="totalLQEDDosePerFraction">2</span> Gy/Fx is:</span> <td> </tr> <tr> <td align="center"> <span class="label"> Early: </span> </td> <td align="center"> <span class="totalEarlyLQED">----</span> </td> <td></td> <td align="center"> <span class="label"> Late: </span> </td> <td align="center"> <span class="totalLateLQED">----</span> </td> </tr> </table> </div> </div> 
+<div class="label">Dose/Fx:</div> 
+<input class="dosePerFraction" tabindex="5" type="text" /> 
+<div class="label"># Fxs:</div> 
+<input class="numberOfFractions" tabindex="6" type="text" /> 
+<div class="label">Total:</div> 
+<input class="totalDose" type="text" tabindex="7" /> 
+</div> 
+<!-- prescription --> 
+<div class="bed"> 
+<div class="section">BED #2:</div> 
+<div class="label">Early:</div> 
+<input class="BEDEarly" readonly="true" type="text" /> 
+<div class="label">Late:</div> 
+<input class="BEDLate" readonly="true" type="text" /> 
+</div> 
+<div class="lqed"> 
+<div class="section">NTD #2: </div> 
+<div class="label">Dose/Fx:</div> 
+<input class="dosePerFractionToConvertTo" tabindex="8" type="text" value="2" /> 
+<div class="label"> Early:</div> 
+<input class="LQEDEarly" readonly="true" type="text" /> 
+<div class="label"> Late:</div> 
+<input class="LQEDLate" readonly="true" type="text" /> 
+</div> 
+</div> 
+<!-- row --> 
+<div class="total_row_container"> 
+<div class="options_table"> 
+<table> 
+<tr> 
+<td> <div class="label">Early &alpha;/&beta;:</div> </td> 
+<td> <input class="earlyAlphaBeta" tabindex="9" type="text" value="10" /> </td> 
+</tr> 
+<tr> 
+<td> <div class="label">Late &alpha;/&beta;:</div> </td> 
+<td> <input class="lateAlphaBeta" tabindex="10" type="text" value="3" /> </td> 
+</tr> 
+<tr> 
+<td align="center" colspan="2"> <input class="clearButton" type="button" value="Reset All"></input> </td> 
+</tr> 
+</table> 
+</div> 
+<div class="totals_table"> 
+<table> 
+<tr> 
+<td align="center" colspan="5"> <span class="section">Total Dose From Prescription</span> </td> 
+</tr> 
+<tr> 
+<td align="center" colspan="5"> <span class="section">#1 and #2 at <span class="totalLQEDDosePerFraction">2</span> Gy/Fx is:</span> </td> 
+</tr> 
+<tr> 
+<td align="center"> <span class="label"> Early: </span> </td> 
+<td align="center"> <span class="totalEarlyLQED">----</span> </td> 
+<td></td> 
+<td align="center"> <span class="label"> Late: </span> </td> 
+<td align="center"> <span class="totalLateLQED">----</span> </td> 
+</tr> 
+</table> 
+</div> 
+</div> 
 
-<script src="http://www.google.com/jsapi"></script> <script> //alert("hello -1"); 
+<script src="http://www.google.com/jsapi"></script> 
+<script> //alert("hello -1"); 
 google.load("jquery", "1.3.1"); 
 
 //var DOSE_PER_FRACTION_CLASS = ".dosePerFraction"; 
@@ -421,4 +488,6 @@ function updateAllFields(e, config)
           field.value = "NaN"; 
       }); 
     } */ 
-    </script> ]]> </Content> </Module>
+    </script>
+   </body>
+ </html>
